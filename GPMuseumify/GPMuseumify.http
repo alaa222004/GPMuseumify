@@ -1,0 +1,66 @@
+﻿### Base URL
+@GPMuseumify_HostAddress = http://localhost:5004
+
+################################################################
+### 1️⃣ Register
+POST {{GPMuseumify_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "Name": "alaa123",
+  "email": "alaa@example.com",
+  "password": "Password123!"
+}
+
+### 2️⃣ Login 
+POST {{GPMuseumify_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "alaa@example.com",
+  "password": "Password123!"
+}
+
+### 3️⃣ Verify Email 
+POST {{GPMuseumify_HostAddress}}/api/auth/verify-email
+Content-Type: application/json
+
+{
+  "email": "alaa@example.com",
+  "code": "123456"
+}
+
+### 4️⃣ Resend Verification Code 
+POST {{GPMuseumify_HostAddress}}/api/auth/resend-verification
+Content-Type: application/json
+
+{
+  "email": "alaa@example.com"
+}
+
+### 5️⃣ Forgot Password 
+POST {{GPMuseumify_HostAddress}}/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "alaa@example.com"
+}
+
+### 6️⃣ Reset Password 
+POST {{GPMuseumify_HostAddress}}/api/auth/reset-password
+Content-Type: application/json
+
+{
+  "email": "alaa@example.com",
+  "token": "reset_token_here",
+  "newPassword": "NewPassword123!"
+}
+
+### 7️⃣ Social Login 
+POST {{GPMuseumify_HostAddress}}/api/auth/social-login
+Content-Type: application/json
+
+{
+  "provider": "Google",
+  "token": "social_token_here"
+}
