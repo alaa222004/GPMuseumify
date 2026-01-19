@@ -25,7 +25,6 @@ public class ApplicationDbContext: DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // User Configuration
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasIndex(e => e.Email).IsUnique();
@@ -33,7 +32,6 @@ public class ApplicationDbContext: DbContext
             entity.HasIndex(e => e.Role); // Index for Role queries
         });
 
-        // UserFavorite - Prevent duplicate favorites
         modelBuilder.Entity<UserFavorite>(entity =>
         {
             entity.HasIndex(e => new { e.UserId, e.StatueId }).IsUnique()
@@ -43,14 +41,12 @@ public class ApplicationDbContext: DbContext
         });
 
 
-        // Statue Configuration
         modelBuilder.Entity<Statue>(entity =>
         {
             entity.HasIndex(e => e.Name);
             entity.Property(e => e.VideoUrl).IsRequired();
         });
 
-        // StatueImage Configuration
         modelBuilder.Entity<StatueImage>(entity =>
         {
             entity.HasOne(si => si.Statue)
@@ -59,7 +55,6 @@ public class ApplicationDbContext: DbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // UserHistory Configuration
         modelBuilder.Entity<UserHistory>(entity =>
         {
             entity.HasOne(uh => uh.User)
@@ -68,7 +63,6 @@ public class ApplicationDbContext: DbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // UserFavorite Configuration
         modelBuilder.Entity<UserFavorite>(entity =>
         {
             entity.HasOne(uf => uf.User)
