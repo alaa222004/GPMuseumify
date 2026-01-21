@@ -7,9 +7,9 @@ POST {{GPMuseumify_HostAddress}}/api/auth/register
 Content-Type: application/json
 
 {
-  "Name": "alaa123",
-  "email": "alaa@example.com",
-  "password": "Password123!"
+  "name": "esraa",
+  "email": "Esraa.22120234@muc.edu.eg",
+  "password": "123456"
 }
 
 ### 2️⃣ Login 
@@ -26,8 +26,8 @@ POST {{GPMuseumify_HostAddress}}/api/auth/verify-email
 Content-Type: application/json
 
 {
-  "email": "alaa@example.com",
-  "code": "123456"
+  "email": "420220485@fa-hists.edu.eg",
+  "code": "4448"
 }
 
 ### 4️⃣ Resend Verification Code 
@@ -35,7 +35,9 @@ POST {{GPMuseumify_HostAddress}}/api/auth/resend-verification
 Content-Type: application/json
 
 {
-  "email": "alaa@example.com"
+ 
+    "email": "420220340@fa-hists.edu.eg"
+  
 }
 
 ### 5️⃣ Forgot Password 
@@ -43,7 +45,7 @@ POST {{GPMuseumify_HostAddress}}/api/auth/forgot-password
 Content-Type: application/json
 
 {
-  "email": "alaa@example.com"
+  "email": "420220340@fa-hists.edu.eg"
 }
 
 ### 6️⃣ Reset Password 
@@ -51,9 +53,9 @@ POST {{GPMuseumify_HostAddress}}/api/auth/reset-password
 Content-Type: application/json
 
 {
-  "email": "alaa@example.com",
-  "token": "reset_token_here",
-  "newPassword": "NewPassword123!"
+   
+  "token": "7295",
+  "newPassword": "12345678910"
 }
 
 ### 7️⃣ Social Login 
@@ -61,6 +63,17 @@ POST {{GPMuseumify_HostAddress}}/api/auth/social-login
 Content-Type: application/json
 
 {
-  "provider": "Google",
+  "provider": "google",
   "token": "social_token_here"
 }
+### 8️⃣ Search Artifacts
+
+POST {{GPMuseumify_HostAddress}}/api/search
+Content-Type: application/json
+{
+"query": "ram",
+  "type": "statue",
+  "page": 1,
+  "pageSize": 10
+}
+
