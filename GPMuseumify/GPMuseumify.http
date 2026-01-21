@@ -7,8 +7,8 @@ POST {{GPMuseumify_HostAddress}}/api/auth/register
 Content-Type: application/json
 
 {
-  "name": "ahmed",
-  "email": "ahmed.samer806@gmail.com",
+  "name": "esraa",
+  "email": "Esraa.22120234@muc.edu.eg",
   "password": "123456"
 }
 
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 {
  
-    "email": "420220485@fa-hists.edu.eg"
+    "email": "420220340@fa-hists.edu.eg"
   
 }
 
@@ -45,7 +45,7 @@ POST {{GPMuseumify_HostAddress}}/api/auth/forgot-password
 Content-Type: application/json
 
 {
-  "email": "420220485@fa-hists.edu.eg"
+  "email": "420220340@fa-hists.edu.eg"
 }
 
 ### 6️⃣ Reset Password 
@@ -54,8 +54,8 @@ Content-Type: application/json
 
 {
    
-  "token": "6988",
-  "newPassword": "123456789"
+  "token": "7295",
+  "newPassword": "12345678910"
 }
 
 ### 7️⃣ Social Login 
@@ -66,3 +66,14 @@ Content-Type: application/json
   "provider": "google",
   "token": "social_token_here"
 }
+### 8️⃣ Search Artifacts
+
+POST {{GPMuseumify_HostAddress}}/api/search
+Content-Type: application/json
+{
+"query": "ram",
+  "type": "statue",
+  "page": 1,
+  "pageSize": 10
+}
+
