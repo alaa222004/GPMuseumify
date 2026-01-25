@@ -1,0 +1,73 @@
+
+  {
+    "news": [
+      {
+        "id": "1",
+        "title": "Egypt has announced the long-awaited return of Queen Nefertiti's head",
+        "titleAr": "مصر تعلن عن العودة المنتظرة لرأس الملكة نفرتيتي",
+        "description": "Egypt has announced the long-awaited return of Queen Nefertiti's head after years of international negotiations. Welcome back, Queen of the Nile 🇪🇬✨",
+        "descriptionAr": "أعلنت مصر عن العودة المنتظرة لرأس الملكة نفرتيتي بعد سنوات من المفاوضات الدولية. مرحباً بعودتك، ملكة النيل 🇪🇬✨",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ21x1_Z2hIwksU2Xdk5bQwyTSZZSrjAo1USvZTBg7zOj22eX7qN9Ryi_PtzKBFQBszRHRP-tXHXTBpGG86Vl5R0u9bucqRlfDJGw84dIaYUQ&s=10",
+        "category": "archaeology",
+        "publishedAt": "2024-01-15T10:00:00Z",
+        "sourceName": "Museumify"
+      },
+      {
+        "id": "2",
+        "title": "Seven rare Pharaonic-era artifacts found in Kafr El-Sheikh",
+        "titleAr": "اكتشاف سبعة قطع أثرية نادرة من العصر الفرعوني في كفر الشيخ",
+        "description": "Archaeologists have discovered seven rare artifacts from the Pharaonic era in Kafr El-Sheikh. The discovery includes pottery, jewelry, and tools dating back thousands of years.",
+        "descriptionAr": "اكتشف علماء الآثار سبعة قطع أثرية نادرة من العصر الفرعوني في كفر الشيخ. الاكتشاف يشمل فخار ومجوهرات وأدوات تعود لآلاف السنين.",
+        "imageUrl": "https://example.com/images/kafr-elsheikh.jpg",
+        "category": "archaeology",
+        "publishedAt": "2024-01-14T14:30:00Z",
+        "sourceName": "Museumify"
+      },
+      {
+        "id": "3",
+        "title": "Seven rare Pharaonic-era artifacts found in Kafr El-Sheikh",
+        "titleAr": "اكتشاف سبعة قطع أثرية نادرة من العصر الفرعوني في كفر الشيخ",
+        "description": "Archaeologists have discovered seven rare artifacts from the Pharaonic era in Kafr El-Sheikh. The discovery includes pottery, jewelry, and tools dating back thousands of years.",
+        "descriptionAr": "اكتشف علماء الآثار سبعة قطع أثرية نادرة من العصر الفرعوني في كفر الشيخ. الاكتشاف يشمل فخار ومجوهرات وأدوات تعود لآلاف السنين.",
+        "imageUrl": "https://example.com/images/kafr-elsheikh.jpg",
+        "category": "archaeology",
+        "publishedAt": "2024-01-14T14:30:00Z",
+        "sourceName": "Museumify"
+      }
+    ],
+    "events": [
+      {
+        "id": "e1",
+        "title": "Special Exhibition: Treasures of Ancient Egypt",
+        "titleAr": "معرض خاص: كنوز مصر القديمة",
+        "description": "Join us for a special exhibition showcasing rare artifacts from ancient Egypt. This exclusive event features items never before displayed to the public.",
+        "descriptionAr": "انضم إلينا في معرض خاص يعرض قطع أثرية نادرة من مصر القديمة. هذا الحدث الحصري يعرض قطع لم تُعرض للجمهور من قبل.",
+        "imageUrl": "https://example.com/images/exhibition.jpg",
+        "category": "exhibition",
+        "eventDate": "2024-02-15T18:00:00Z",
+        "location": "Egyptian Museum, Cairo",
+        "locationAr": "المتحف المصري، القاهرة",
+        "publishedAt": "2024-01-10T09:00:00Z",
+        "sourceName": "Museumify"
+      },
+      {
+        "id": "e2",
+        "title": "Archaeology Conference 2024",
+        "titleAr": "مؤتمر الآثار 2024",
+        "description": "Annual conference bringing together leading archaeologists and researchers to discuss the latest discoveries and research in Egyptian archaeology.",
+        "descriptionAr": "مؤتمر سنوي يجمع كبار علماء الآثار والباحثين لمناقشة أحدث الاكتشافات والأبحاث في الآثار المصرية.",
+        "imageUrl": "https://example.com/images/conference.jpg",
+        "category": "conference",
+        "eventDate": "2024-03-20T10:00:00Z",
+        "location": "Cairo University",
+        "locationAr": "جامعة القاهرة",
+        "publishedAt": "2024-01-08T08:00:00Z",
+        "sourceName": "Museumify"
+
+
+      }
+    ]
+  }
+
+
+

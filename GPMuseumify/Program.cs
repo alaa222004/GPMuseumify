@@ -70,6 +70,7 @@ namespace Museumify
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<ISearchService, SearchService>();
+            builder.Services.AddSingleton<INewsService, NewsService>();
 
             // JWT Authentication
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
