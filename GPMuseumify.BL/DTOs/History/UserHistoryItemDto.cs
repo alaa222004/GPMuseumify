@@ -12,7 +12,7 @@ namespace GPMuseumify.BL.DTOs.History
         public string? Title { get; set; }
         public string? Subtitle { get; set; }
         public string? Description { get; set; }
-        public string? ThumbnailUrl { get; set; }
+        public string? ThumbnailUrl { get; set; }// صورة مصغرة
         public string? VideoUrl { get; set; }
         public DateTime ViewedAt { get; set; }
         public string? SearchType { get; set; }
