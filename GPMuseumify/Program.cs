@@ -60,9 +60,10 @@ namespace Museumify
 
             // Repositories
             builder.Services.AddScoped<IUserRepository, UserRepository>();
-
             builder.Services.AddScoped<ISearchRepository, SearchRepository>();
             builder.Services.AddScoped<ISearchService, SearchService>();
+            builder.Services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
+
 
 
             // Services
@@ -71,6 +72,7 @@ namespace Museumify
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<ISearchService, SearchService>();
             builder.Services.AddSingleton<INewsService, NewsService>();
+            builder.Services.AddScoped<IHistoryService, HistoryService>();
 
             // JWT Authentication
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
