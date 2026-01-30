@@ -43,6 +43,10 @@ public class User
 
     public DateTime CreatedAt { get; set; }= DateTime.UtcNow;
 
+    [MaxLength(5)]
+    public string PreferredLanguage { get; set; } = "en";
+    public bool NotificationsEnabled { get; set; } = true; 
+
     public virtual ICollection<UserHistory> UserHistories { get; set; } = new List<UserHistory>();
     public virtual ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
 }
