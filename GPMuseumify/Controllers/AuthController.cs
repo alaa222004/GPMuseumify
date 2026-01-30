@@ -1,6 +1,7 @@
 ﻿using GPMuseumify.BL.DTOs.Auth;
 using GPMuseumify.BL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GPMuseumify.Controllers;
 
@@ -202,5 +203,12 @@ public class AuthController : ControllerBase
             _logger.LogError(ex, "Error during social login");
             return StatusCode(500, new { message = "An error occurred during social login" });
         }
+
+    }
+    [HttpPost("logout")]
+    [Authorize]
+    public IActionResult Logout()
+    {
+        return Ok(new { message = "Logged out successfully" });
     }
 }
