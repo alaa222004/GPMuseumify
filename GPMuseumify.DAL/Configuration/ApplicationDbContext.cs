@@ -17,6 +17,7 @@ public class ApplicationDbContext: DbContext
     public DbSet<Museum> Museums { get; set; }
     public DbSet<StatueImage> StatueImages { get; set; }
     public DbSet<UserHistory> UserHistories { get; set; }
+    public DbSet<UserFavoriteNews> UserFavoriteNews { get; set; }
     public DbSet<UserFavorite> UserFavorites { get; set; }
     public DbSet<Story> Stories { get; set; }
     public DbSet<ImageRecognitionLog> ImageRecognitionLogs { get; set; }
@@ -70,6 +71,15 @@ public class ApplicationDbContext: DbContext
                 .HasForeignKey(uf => uf.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+
+        modelBuilder.Entity<UserFavoriteNews>(entity=>
+        {
+            entity.HasIndex(e => new { e.UserId, e.ItemId, e.ItemType }).IsUnique();
+            entity.HasOne(ufn => ufn.User)
+                .WithMany(u => u.UserFavoriteNews)
+                .HasForeignKey(ufn => ufn.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
     }
 }
 

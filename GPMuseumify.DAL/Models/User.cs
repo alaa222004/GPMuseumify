@@ -49,6 +49,7 @@ public class User
 
     public virtual ICollection<UserHistory> UserHistories { get; set; } = new List<UserHistory>();
     public virtual ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
+    public virtual ICollection<UserFavoriteNews> UserFavoriteNews { get; set; } = new List<UserFavoriteNews>();
 }
 
 

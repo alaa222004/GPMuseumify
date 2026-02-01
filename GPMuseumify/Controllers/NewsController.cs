@@ -18,7 +18,7 @@ namespace GPMuseumify.Controllers
         [HttpGet]
         public async Task<ActionResult<AllContentResponseDto>> GetAllNews()
         {
-            var result = await _newsService.GetAllNewsAsync();
+            var result = await _newsService.GetAllContentAsync();
             return Ok(result);
         }
     }
