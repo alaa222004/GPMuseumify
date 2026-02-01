@@ -63,6 +63,8 @@ namespace Museumify
             builder.Services.AddScoped<ISearchRepository, SearchRepository>();
             builder.Services.AddScoped<ISearchService, SearchService>();
             builder.Services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
+            builder.Services.AddScoped<IUserFavoriteRepository, UserFavoriteRepository>();
+            builder.Services.AddScoped<IUserFavoriteNewsRepository,UserFavoriteNewsRepository>();
 
 
 
@@ -73,6 +75,8 @@ namespace Museumify
             builder.Services.AddScoped<ISearchService, SearchService>();
             builder.Services.AddSingleton<INewsService, NewsService>();
             builder.Services.AddScoped<IHistoryService, HistoryService>();
+            builder.Services.AddScoped<IFavoritesService, FavoritesService>();
+            builder.Services.AddScoped<IFavoritesNewsService, FavoritesNewsService>();
 
             // JWT Authentication
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
