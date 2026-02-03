@@ -73,6 +73,10 @@ public class AuthController : ControllerBase
 
             return Ok(result);
         }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during login");
@@ -91,12 +95,15 @@ public class AuthController : ControllerBase
             }
 
             var result = await _authService.VerifyEmailAsync(verifyEmailDto);
-            if (!result)
+            //if (!result)
+            if (result == null)
+
             {
                 return BadRequest(new { message = "Invalid or expired verification code" });
             }
 
-            return Ok(new { message = "Email verified successfully" });
+            //return Ok(new { message = "Email verified successfully" });
+            return Ok(result);
         }
         catch (Exception ex)
         {
@@ -152,19 +159,44 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("reset-password")]
+    //public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+    //{
+    //    try
+    //    {
+    //        if (!ModelState.IsValid)
+    //        {
+    //            return BadRequest(ModelState);
+    //        }
+
+    //        var result = await _authService.ResetPasswordAsync(resetPasswordDto);
+    //        if (!result)
+    //        {
+    //            return BadRequest(new { message = "Invalid or expired verification code. Please request a new code." });
+    //        }
+
+    //        return Ok(new { message = "Password reset successfully" });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logger.LogError(ex, "Error during password reset");
+    //        return StatusCode(500, new { message = "An error occurred during password reset" });
+    //    }
+    //}
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
         try
         {
+            // لو أي حقل ناقص أو Email غير صحيح → نفس رسالة OTP خطأ
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new { message = "Invalid or expired verification code. Please request a new code." });
             }
 
             var result = await _authService.ResetPasswordAsync(resetPasswordDto);
+
             if (!result)
             {
-                return BadRequest(new { message = "Invalid or expired reset token" });
+                return BadRequest(new { message = "Invalid or expired verification code. Please request a new code." });
             }
 
             return Ok(new { message = "Password reset successfully" });
@@ -175,6 +207,7 @@ public class AuthController : ControllerBase
             return StatusCode(500, new { message = "An error occurred during password reset" });
         }
     }
+
 
     [HttpPost("social-login")]
     public async Task<IActionResult> SocialLogin([FromBody] SocialLoginDto socialLoginDto)

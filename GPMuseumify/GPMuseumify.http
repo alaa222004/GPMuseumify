@@ -7,9 +7,9 @@ POST {{GPMuseumify_HostAddress}}/api/auth/register
 Content-Type: application/json
 
 {
-  "name": "alaa",
-  "email": "alaasamer222004@gmail.com",
-  "password": "Password123!"
+  "name": "mena",
+  "email": "mennatallaadel6@gmail.com",
+  "password": "Password12366"
 }
 
 ### 2️⃣ Login 
@@ -17,8 +17,8 @@ POST {{GPMuseumify_HostAddress}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "alaasamer222004@gmail.com",
-  "password": "alaasamer1234"
+  "email": "mennatallaadel6@gmail.com",
+  "password": "Password12366"
 }
 
 ### 3️⃣ Verify Email 
@@ -26,8 +26,8 @@ POST {{GPMuseumify_HostAddress}}/api/auth/verify-email
 Content-Type: application/json
 
 {
-  "email": "420220485@fa-hists.edu.eg",
-  "code": "4448"
+  "email": "mennatallaadel6@gmail.com",
+  "code": "8898"
 }
 
 ### 4️⃣ Resend Verification Code 
@@ -53,11 +53,10 @@ POST {{GPMuseumify_HostAddress}}/api/auth/reset-password
 Content-Type: application/json
 
 {
-   
-  "token": "1613",
-  "newPassword": "alaasamer1234"
+  "email": "alaasamer222004@gmail.com",
+  "code": "9003",
+  "newPassword": "alaasamer12345655"
 }
-
 ### 7️⃣ Social Login 
 POST {{GPMuseumify_HostAddress}}/api/auth/social-login
 Content-Type: application/json

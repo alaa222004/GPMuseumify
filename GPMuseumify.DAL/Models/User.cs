@@ -33,7 +33,8 @@ public class User
 
     [MaxLength(255)]
     public string? EmailVerificationToken { get; set; }
-
+    [MaxLength(10)]
+    public string? EmailVerificationCode { get; set; }
     public DateTime? EmailVerificationExpiry { get; set; }
 
     [MaxLength(255)]
