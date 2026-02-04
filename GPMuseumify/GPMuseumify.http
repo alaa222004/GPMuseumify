@@ -5,12 +5,14 @@
 ### 1️⃣ Register
 POST {{GPMuseumify_HostAddress}}/api/auth/register
 Content-Type: application/json
-
 {
   "name": "mena",
   "email": "mennatallaadel6@gmail.com",
-  "password": "Password12366"
+  "password": "Password12366",
+  "phoneNumber": "0123456789"
+
 }
+
 
 ### 2️⃣ Login 
 POST {{GPMuseumify_HostAddress}}/api/auth/login
