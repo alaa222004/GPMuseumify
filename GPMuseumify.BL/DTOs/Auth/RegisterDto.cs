@@ -19,6 +19,10 @@ public class RegisterDto
     [MaxLength(100, ErrorMessage = "Password cannot exceed 100 characters")]
     public string Password { get; set; } = string.Empty;
 
-     [RegularExpression("User|Admin", ErrorMessage = "Role must be either 'User' or 'Admin'")]
-    public string Role { get; set; }="User";
+    [Phone(ErrorMessage = "Invalid phone number format")]
+    [MaxLength(20, ErrorMessage = "Phone number cannot exceed 20 characters")]
+    public string? PhoneNumber { get; set; }
+
+    //[RegularExpression("User|Admin", ErrorMessage = "Role must be either 'User' or 'Admin'")]
+    //public string Role { get; set; }="User";
 }

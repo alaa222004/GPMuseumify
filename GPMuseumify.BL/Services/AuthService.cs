@@ -391,7 +391,7 @@ public class AuthService : IAuthService
         var verificationToken = Guid.NewGuid().ToString();
 
         // Validate Role (only allow Admin if provided, otherwise default to User)
-        var role = registerDto.Role?.ToLower() == "admin" ? "Admin" : "User";
+        //var role = registerDto.Role?.ToLower() == "admin" ? "Admin" : "User";
 
         // Create user
         var user = new User
@@ -399,7 +399,8 @@ public class AuthService : IAuthService
             Name = registerDto.Name,
             Email = registerDto.Email.ToLower(),
             PasswordHash = passwordHash,
-            Role = role,
+            //Role = role,
+            PhoneNumber = registerDto.PhoneNumber?.Trim(),
             EmailVerificationToken = verificationToken,
             EmailVerificationCode = verificationCode,
             EmailVerificationExpiry = DateTime.UtcNow.AddHours(24),
