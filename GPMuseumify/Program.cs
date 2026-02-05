@@ -98,7 +98,11 @@ namespace Museumify
                     ValidateAudience = true,
                     ValidAudience = jwtSettings["Audience"] ?? "MuseumifyApp",
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero,
+
+
+                    RoleClaimType = "role"
+
                 };
             });
 

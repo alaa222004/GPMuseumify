@@ -14,6 +14,7 @@ Content-Type: application/json
 }
 
 
+
 ### 2️⃣ Login 
 POST {{GPMuseumify_HostAddress}}/api/auth/login
 Content-Type: application/json
@@ -56,8 +57,9 @@ Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "code": "9003",
-  "newPassword": "alaasamer12345655"
+  "code": "6521",
+  "newPassword": "alaasamer",
+  "confirmPassword": "alaasamer"
 }
 ### 7️⃣ Social Login 
 POST {{GPMuseumify_HostAddress}}/api/auth/social-login
@@ -83,3 +85,25 @@ Content-Type: application/json
 {
   
 }
+
+
+### ---------- تيست البروفيل (Profile) ----------
+# الخطوات:
+# 1. شغّل المشروع (F5 أو dotnet run)
+# 2. نفّذ "Login للبروفيل" تحت كده (نفس إيميل وباسورد الـ Register)
+# 3. من الـ Response انسخ: userId و token
+# 4. حط الـ userId مكان {{UserId}} والـ token مكان {{Token}} في المتغيرات تحت
+# 5. نفّذ "Get Profile" ثم "Update Profile" لو حابّة
+
+
+@UserId = 13d18f1c-b172-424b-a8ff-e23035a70514
+@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxM2QxOGYxYy1iMTcyLTQyNGItYThmZi1lMjMwMzVhNzA1MTQiLCJlbWFpbCI6Im1lbm5hdGFsbGFhZGVsNkBnbWFpbC5jb20iLCJ1bmlxdWVfbmFtZSI6Im1lbmEiLCJyb2xlIjoiVXNlciIsIklzRW1haWxWZXJpZmllZCI6IlRydWUiLCJuYmYiOjE3NzAyNTI4MDMsImV4cCI6MTc3MDMzOTIwMywiaWF0IjoxNzcwMjUyODAzLCJpc3MiOiJNdXNldW1pZnlBUEkiLCJhdWQiOiJNdXNldW1pZnlBcHAifQ.UH5a593sBZaaQXmuCzQzwXikIRh0HUae5-bv9AqNF9w
+
+
+### Get Profile (جلب بيانات اليوزر — بعد ما تحط UserId و Token فوق)
+GET {{GPMuseumify_HostAddress}}/api/users/{{UserId}}/profile
+Authorization: Bearer {{Token}}
+
+
+
+
