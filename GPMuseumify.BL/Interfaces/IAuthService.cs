@@ -12,6 +12,8 @@ public interface IAuthService
     Task<AuthResponseDto?> VerifyEmailAsync(VerifyEmailDto verifyEmailDto);
     Task<bool> ResendVerificationCodeAsync(string email);
     Task<bool> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
+
+    Task<string> VerifyResetCodeAsync(VerifyResetCodeDto dto);
     Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
     Task<AuthResponseDto?> SocialLoginAsync(SocialLoginDto socialLoginDto);
 
