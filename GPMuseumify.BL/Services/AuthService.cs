@@ -431,7 +431,9 @@ public class AuthService : IAuthService
             Name = user.Name,
             Email = user.Email,
             Role = user.Role,
-            IsEmailVerified = false
+            IsEmailVerified = false,
+            //PhoneNumber = user.PhoneNumber,s
+
         };
     }
 
@@ -760,6 +762,19 @@ public class AuthService : IAuthService
     //    await _userRepository.UpdateAsync(user);
     //    return true;
     //}
+
+    public async Task<bool> ChangePasswordAsync(Guid userId, ChangePasswordDto dto)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+            return false;
+        if (!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash))
+            return false;
+
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+        await _userRepository.UpdateAsync(user);
+        return true;
+    }
 
 
     public async Task<AuthResponseDto?> SocialLoginAsync(SocialLoginDto socialLoginDto)

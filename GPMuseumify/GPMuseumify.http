@@ -15,13 +15,13 @@ Content-Type: application/json
 
 
 
-### 2️⃣ Login 
+### Login 
 POST {{GPMuseumify_HostAddress}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "mennatallaadel6@gmail.com",
-  "password": "Password12366"
+  "email": "alaasamer222004@gmail.com",
+  "password": "newPassword123"
 }
 
 ### 3️⃣ Verify Email 
@@ -50,6 +50,7 @@ Content-Type: application/json
 {
   "email": "alaasamer222004@gmail.com"
 }
+
 
 ### 2️⃣ Verify Reset Code — تأكيد صحة الـ OTP قبل شاشة تغيير الباسورد
 POST {{GPMuseumify_HostAddress}}/api/auth/verify-reset-code
@@ -96,23 +97,22 @@ Content-Type: application/json
 }
 
 
-### ---------- تيست البروفيل (Profile) ----------
-# الخطوات:
-# 1. شغّل المشروع (F5 أو dotnet run)
-# 2. نفّذ "Login للبروفيل" تحت كده (نفس إيميل وباسورد الـ Register)
-# 3. من الـ Response انسخ: userId و token
-# 4. حط الـ userId مكان {{UserId}} والـ token مكان {{Token}} في المتغيرات تحت
-# 5. نفّذ "Get Profile" ثم "Update Profile" لو حابّة
+# من الـ response انسخ "token" وحطّه في @Token تحت عشان Get/Update Profile
 
-
-@UserId = 13d18f1c-b172-424b-a8ff-e23035a70514
-@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxM2QxOGYxYy1iMTcyLTQyNGItYThmZi1lMjMwMzVhNzA1MTQiLCJlbWFpbCI6Im1lbm5hdGFsbGFhZGVsNkBnbWFpbC5jb20iLCJ1bmlxdWVfbmFtZSI6Im1lbmEiLCJyb2xlIjoiVXNlciIsIklzRW1haWxWZXJpZmllZCI6IlRydWUiLCJuYmYiOjE3NzAyNTI4MDMsImV4cCI6MTc3MDMzOTIwMywiaWF0IjoxNzcwMjUyODAzLCJpc3MiOiJNdXNldW1pZnlBUEkiLCJhdWQiOiJNdXNldW1pZnlBcHAifQ.UH5a593sBZaaQXmuCzQzwXikIRh0HUae5-bv9AqNF9w
-
-
-### Get Profile (جلب بيانات اليوزر — بعد ما تحط UserId و Token فوق)
-GET {{GPMuseumify_HostAddress}}/api/users/{{UserId}}/profile
+### ---------- Personal Information (بعد اللوجن) ----------
+@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmMzUwNTA5Mi0xYWEwLTRmZmMtYjNjNy05OTJjNjM0NmE4N2EiLCJlbWFpbCI6ImFsYWFzYW1lcjIyMjAwNEBnbWFpbC5jb20iLCJzdWIiOiJmMzUwNTA5Mi0xYWEwLTRmZmMtYjNjNy05OTJjNjM0NmE4N2EiLCJ1bmlxdWVfbmFtZSI6ImFsYWE2Iiwicm9sZSI6IlVzZXIiLCJJc0VtYWlsVmVyaWZpZWQiOiJUcnVlIiwibmJmIjoxNzcwMzQzNTg3LCJleHAiOjE3NzA0Mjk5ODcsImlhdCI6MTc3MDM0MzU4NywiaXNzIjoiTXVzZXVtaWZ5QVBJIiwiYXVkIjoiTXVzZXVtaWZ5QXBwIn0.e4bEA0QaTXREztcGWkyfobJEo-fV8aFVTeHFrbFKXM0
+### Get My Profile — جلب الاسم، الإيميل، رقم التلفون (اللي اتخزنوا وقت الـ Register)
+GET {{GPMuseumify_HostAddress}}/api/users/me/profile
 Authorization: Bearer {{Token}}
 
+### Update My Profile — تعديل الاسم و/أو رقم التلفون (زر Edit)
+PUT {{GPMuseumify_HostAddress}}/api/users/me/profile
+Authorization: Bearer {{Token}}
+Content-Type: application/json
 
+{
+  "name": "Menna Hisham",
+  "phoneNumber": "+20 01012345678"
+}
 
 

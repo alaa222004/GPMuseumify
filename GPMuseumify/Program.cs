@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-
 using Museumify.DAL.Repositories;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace Museumify
@@ -79,6 +80,8 @@ namespace Museumify
             builder.Services.AddScoped<IFavoritesNewsService, FavoritesNewsService>();
 
             // JWT Authentication
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey is not configured");
 
@@ -98,12 +101,37 @@ namespace Museumify
                     ValidateAudience = true,
                     ValidAudience = jwtSettings["Audience"] ?? "MuseumifyApp",
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero,
-
-
+                    ClockSkew = TimeSpan.FromMinutes(1),
+                    NameClaimType = "sub",
                     RoleClaimType = "role"
-
                 };
+
+                options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+                {
+                    OnAuthenticationFailed = async ctx =>
+                    {
+                        ctx.Response.StatusCode = 401;
+                        ctx.Response.ContentType = "application/json";
+                        var msg = ctx.Exception?.Message ?? "Invalid or expired token.";
+                        await ctx.Response.WriteAsJsonAsync(new { message = msg });
+                    },
+                    OnChallenge = async ctx =>
+                    {
+                        ctx.HandleResponse(); // ??? ???? ???? ????? ?? ??????
+                        ctx.Response.StatusCode = 401;
+                        ctx.Response.ContentType = "application/json";
+                        var authHeader = ctx.Request.Headers.Authorization.ToString();
+                        var tokenValue = authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+                            ? authHeader["Bearer ".Length..].Trim()
+                            : "";
+                        var msg = string.IsNullOrEmpty(tokenValue)
+                            ? "No token provided. Run Login and set Authorization: Bearer <token>."
+                            : (ctx.ErrorDescription ?? "Invalid or expired token.");
+                        await ctx.Response.WriteAsJsonAsync(new { message = msg });
+                    }
+                };
+
+            
             });
 
             // Authorization Policies
