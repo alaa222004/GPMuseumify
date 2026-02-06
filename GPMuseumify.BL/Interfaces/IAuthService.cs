@@ -15,6 +15,7 @@ public interface IAuthService
 
     Task<string> VerifyResetCodeAsync(VerifyResetCodeDto dto);
     Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
+    Task<bool> ChangePasswordAsync(Guid userId, ChangePasswordDto dto);
     Task<AuthResponseDto?> SocialLoginAsync(SocialLoginDto socialLoginDto);
 
 }
