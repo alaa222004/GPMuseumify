@@ -137,28 +137,28 @@ public class AuthController : ControllerBase
         }
     }
 
-    [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
-    {
-        try
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+    //[HttpPost("forgot-password")]
+    //public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
+    //{
+    //    try
+    //    {
+    //        if (!ModelState.IsValid)
+    //        {
+    //            return BadRequest(ModelState);
+    //        }
 
-            await _authService.ForgotPasswordAsync(forgotPasswordDto);
-            // Always return success for security (don't reveal if email exists)
-            return Ok(new { message = "If the email exists, a password reset link has been sent" });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error during forgot password");
-            return StatusCode(500, new { message = "An error occurred" });
-        }
-    }
+    //        await _authService.ForgotPasswordAsync(forgotPasswordDto);
+    //        // Always return success for security (don't reveal if email exists)
+    //        return Ok(new { message = "If the email exists, a password reset link has been sent" });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logger.LogError(ex, "Error during forgot password");
+    //        return StatusCode(500, new { message = "An error occurred" });
+    //    }
+    //}
 
-    [HttpPost("reset-password")]
+    //[HttpPost("reset-password")]
     //public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     //{
     //    try
@@ -182,22 +182,87 @@ public class AuthController : ControllerBase
     //        return StatusCode(500, new { message = "An error occurred during password reset" });
     //    }
     //}
+    //public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+    //{
+    //    try
+    //    {
+    //        // لو أي حقل ناقص أو Email غير صحيح → نفس رسالة OTP خطأ
+    //        if (!ModelState.IsValid)
+    //        {
+    //            return BadRequest(new { message = "Invalid or expired verification code. Please request a new code." });
+    //        }
+
+    //        var result = await _authService.ResetPasswordAsync(resetPasswordDto);
+
+    //        if (!result)
+    //        {
+    //            return BadRequest(new { message = "Invalid or expired verification code. Please request a new code." });
+    //        }
+
+    //        return Ok(new { message = "Password reset successfully" });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logger.LogError(ex, "Error during password reset");
+    //        return StatusCode(500, new { message = "An error occurred during password reset" });
+    //    }
+    //}
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _authService.ForgotPasswordAsync(forgotPasswordDto);
+            return Ok(new { message = "If the email exists, a verification code has been sent." });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error during forgot password");
+            return StatusCode(500, new { message = "An error occurred" });
+        }
+    }
+
+    /// <summary>2️⃣ التحقق من OTP — يتأكد من صحة الكود قبل فتح شاشة تغيير الباسورد.</summary>
+    [HttpPost("verify-reset-code")]
+    public async Task<IActionResult> VerifyResetCode([FromBody] VerifyResetCodeDto dto)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var token = await _authService.VerifyResetCodeAsync(dto);
+            if (token == null)
+                return BadRequest(new { message = "Invalid or expired verification code. Please request a new code." });
+
+            return Ok(new { message = "Verification code is valid.", token });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error during verify reset code");
+            return StatusCode(500, new { message = "An error occurred" });
+        }
+    }
+
+    /// <summary>3️⃣ تغيير الباسورد — بعد التحقق من OTP، إرسال الإيميل + الكود + الباسورد الجديدة.</summary>
+    [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
     {
         try
         {
-            // لو أي حقل ناقص أو Email غير صحيح → نفس رسالة OTP خطأ
             if (!ModelState.IsValid)
-            {
-                return BadRequest(new { message = "Invalid or expired verification code. Please request a new code." });
-            }
+                return BadRequest(ModelState);
+
+            if (string.Compare(resetPasswordDto.NewPassword, resetPasswordDto.ConfirmPassword, StringComparison.Ordinal) != 0)
+                return BadRequest(new { message = "Password and confirmation do not match." });
 
             var result = await _authService.ResetPasswordAsync(resetPasswordDto);
-
             if (!result)
-            {
                 return BadRequest(new { message = "Invalid or expired verification code. Please request a new code." });
-            }
 
             return Ok(new { message = "Password reset successfully" });
         }

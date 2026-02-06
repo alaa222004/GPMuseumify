@@ -43,7 +43,7 @@ Content-Type: application/json
   
 }
 
-### 5️⃣ Forgot Password 
+### 1️⃣ Forgot Password — يبعث OTP على الإيميل
 POST {{GPMuseumify_HostAddress}}/api/auth/forgot-password
 Content-Type: application/json
 
@@ -51,16 +51,25 @@ Content-Type: application/json
   "email": "alaasamer222004@gmail.com"
 }
 
-### 6️⃣ Reset Password 
-POST {{GPMuseumify_HostAddress}}/api/auth/reset-password
+### 2️⃣ Verify Reset Code — تأكيد صحة الـ OTP قبل شاشة تغيير الباسورد
+POST {{GPMuseumify_HostAddress}}/api/auth/verify-reset-code
 Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "code": "6521",
-  "newPassword": "alaasamer",
-  "confirmPassword": "alaasamer"
+  "code": "1507"
 }
+
+### 3️⃣ Reset Password — تغيير الباسورد (بعد ما الـ OTP يتأكد)
+POST {{GPMuseumify_HostAddress}}/api/auth/reset-password
+Content-Type: application/json
+
+{
+  "token": "d5bc55b4d07e4182a01726296a1826a7",
+  "newPassword": "123456",
+  "confirmPassword": "123456"
+}
+
 ### 7️⃣ Social Login 
 POST {{GPMuseumify_HostAddress}}/api/auth/social-login
 Content-Type: application/json

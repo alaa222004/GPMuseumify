@@ -1,12 +1,15 @@
 ﻿
 
 using Google.Apis.Auth;
+using Microsoft.Extensions.Caching.Memory;
 using GPMuseumify.BL.DTOs.Auth;
 using GPMuseumify.BL.Interfaces;
 using GPMuseumify.DAL.Models;
 using GPMuseumify.DAL.Repositories;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
+using Ninject.Activation.Caching;
+using Lucene.Net.Util.Cache;
 
 
 namespace GPMuseumify.BL.Services;
@@ -358,21 +361,26 @@ namespace GPMuseumify.BL.Services;
 
 public class AuthService : IAuthService
 {
+    private const string ResetTokenCachePrefix = "reset:";
+    private static readonly TimeSpan ResetTokenExpiry = TimeSpan.FromMinutes(10);
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
     private readonly IEmailService _emailService;
     private readonly IConfiguration _configuration;
+    private readonly IMemoryCache _cache;
 
     public AuthService(
         IUserRepository userRepository,
         ITokenService tokenService,
         IEmailService emailService,
-        IConfiguration configuration)
+         IConfiguration configuration,
+            IMemoryCache cache)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
         _emailService = emailService;
         _configuration = configuration;
+        _cache = cache;
     }
 
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
@@ -578,51 +586,181 @@ public class AuthService : IAuthService
         return true;
     }
 
+    //    public async Task<bool> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
+    //    {
+    //        var user = await _userRepository.GetByEmailAsync(forgotPasswordDto.Email);
+    //        if (user == null)
+    //        {
+    //            return true;
+    //        }
+
+    //        var otpCode = GenerateVerificationCode();
+    //        user.ResetPasswordToken = otpCode;
+    //        user.ResetPasswordExpiry = DateTime.UtcNow.AddHours(1);
+
+    //        await _userRepository.UpdateAsync(user);
+    //        await _emailService.SendPasswordResetEmailAsync(user.Email, otpCode);
+
+    //        return true;
+    //    }
+
+    //    public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+    //    {
+    //        var user = await _userRepository.GetByEmailAsync(resetPasswordDto.Email);
+    //        if (user == null)
+    //        {
+    //            return false;
+    //        }
+
+    //        // Check expiry
+    //        if (user.ResetPasswordExpiry == null || user.ResetPasswordExpiry < DateTime.UtcNow)
+    //        {
+    //            return false;
+    //        }
+
+    //        // Verify OTP code only (no token)
+    //        if (string.IsNullOrEmpty(user.ResetPasswordToken) || user.ResetPasswordToken != resetPasswordDto.Code)
+    //        {
+    //            return false;
+    //        }
+
+    //        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(resetPasswordDto.NewPassword);
+    //        user.ResetPasswordToken = null;
+    //        user.ResetPasswordExpiry = null;
+
+    //        await _userRepository.UpdateAsync(user);
+    //        return true;
+    //    }
+
+    //    public async Task<AuthResponseDto?> SocialLoginAsync(SocialLoginDto socialLoginDto)
+    //    {
+    //        // TODO: Implement Google/Apple token validation
+    //        // For now, return null (to be implemented)
+    //        throw new NotImplementedException("Social login is not yet implemented");
+    //    }
+
+    //    private string GenerateVerificationCode()
+    //    {
+    //        var random = new Random();
+    //        return random.Next(1000, 9999).ToString();
+    //    }
+    //}
+
+
+    //public async Task<bool> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
+    //{
+    //    var user = await _userRepository.GetByEmailAsync(forgotPasswordDto.Email);
+    //    if (user == null)
+    //    {
+    //        return true;
+    //    }
+
+    //    var otpCode = GenerateVerificationCode();
+    //    user.ResetPasswordToken = otpCode;
+    //    user.ResetPasswordExpiry = DateTime.UtcNow.AddHours(1);
+
+    //    await _userRepository.UpdateAsync(user);
+    //    await _emailService.SendPasswordResetEmailAsync(user.Email, otpCode);
+
+    //    return true;
+    //}
+
+    //public async Task<bool> VerifyResetCodeAsync(VerifyResetCodeDto dto)
+    //{
+    //    var user = await _userRepository.GetByEmailAsync(dto.Email);
+    //    if (user == null)
+    //        return false;
+    //    if (user.ResetPasswordExpiry == null || user.ResetPasswordExpiry < DateTime.UtcNow)
+    //        return false;
+    //    if (string.IsNullOrEmpty(user.ResetPasswordToken) || user.ResetPasswordToken != dto.Code)
+    //        return false;
+    //    return true;
+    //}
     public async Task<bool> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
     {
         var user = await _userRepository.GetByEmailAsync(forgotPasswordDto.Email);
         if (user == null)
-        {
             return true;
-        }
 
         var otpCode = GenerateVerificationCode();
         user.ResetPasswordToken = otpCode;
         user.ResetPasswordExpiry = DateTime.UtcNow.AddHours(1);
-
         await _userRepository.UpdateAsync(user);
         await _emailService.SendPasswordResetEmailAsync(user.Email, otpCode);
 
         return true;
     }
 
+    public async Task<string?> VerifyResetCodeAsync(VerifyResetCodeDto dto)
+    {
+        var user = await _userRepository.GetByEmailAsync(dto.Email);
+        if (user == null)
+            return null;
+        if (user.ResetPasswordExpiry == null || user.ResetPasswordExpiry < DateTime.UtcNow)
+            return null;
+        if (string.IsNullOrEmpty(user.ResetPasswordToken) || user.ResetPasswordToken != dto.Code)
+            return null;
+
+        var resetToken = Guid.NewGuid().ToString("N");
+        _cache.Set(ResetTokenCachePrefix + resetToken, user.Email, new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = ResetTokenExpiry });
+        return resetToken;
+    }
+
     public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
     {
-        var user = await _userRepository.GetByEmailAsync(resetPasswordDto.Email);
+        if (!_cache.TryGetValue(ResetTokenCachePrefix + resetPasswordDto.Token, out string? email) || string.IsNullOrEmpty(email))
+            return false;
+
+        var user = await _userRepository.GetByEmailAsync(email);
         if (user == null)
-        {
             return false;
-        }
-
-        // Check expiry
-        if (user.ResetPasswordExpiry == null || user.ResetPasswordExpiry < DateTime.UtcNow)
-        {
-            return false;
-        }
-
-        // Verify OTP code only (no token)
-        if (string.IsNullOrEmpty(user.ResetPasswordToken) || user.ResetPasswordToken != resetPasswordDto.Code)
-        {
-            return false;
-        }
 
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(resetPasswordDto.NewPassword);
         user.ResetPasswordToken = null;
         user.ResetPasswordExpiry = null;
-
         await _userRepository.UpdateAsync(user);
+
+        _cache.Remove(ResetTokenCachePrefix + resetPasswordDto.Token);
         return true;
     }
+    //public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+    //{
+    //    var user = await _userRepository.GetByEmailAsync(resetPasswordDto.Email);
+    //    if (user == null)
+    //        return false;
+    //    if (user.ResetPasswordExpiry == null || user.ResetPasswordExpiry < DateTime.UtcNow)
+    //        return false;
+    //    if (string.IsNullOrEmpty(user.ResetPasswordToken) || user.ResetPasswordToken != resetPasswordDto.Code)
+    //        return false;
+
+    //    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(resetPasswordDto.NewPassword);
+    //    user.ResetPasswordToken = null;
+    //    user.ResetPasswordExpiry = null;
+
+    //    await _userRepository.UpdateAsync(user);
+    //    return true;
+    //}
+
+
+    //public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+    //{
+    //    var user = await _userRepository.GetByResetTokenAsync(resetPasswordDto.Token);
+
+    //    if (user == null)
+
+    //    {
+    //        return false;
+    //    }
+
+    //    // Hash new password
+    //    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(resetPasswordDto.NewPassword);
+    //    user.ResetPasswordToken = null;
+    //    user.ResetPasswordExpiry = null;
+
+    //    await _userRepository.UpdateAsync(user);
+    //    return true;
+    //}
+
 
     public async Task<AuthResponseDto?> SocialLoginAsync(SocialLoginDto socialLoginDto)
     {
@@ -637,5 +775,4 @@ public class AuthService : IAuthService
         return random.Next(1000, 9999).ToString();
     }
 }
-
 
