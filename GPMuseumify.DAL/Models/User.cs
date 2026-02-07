@@ -24,6 +24,12 @@ public class User
 
     [MaxLength(100)]
     public string? Location { get; set; }
+    [MaxLength(255)]
+    public string? GoogleId { get; set; }
+
+    [MaxLength(255)]
+    public string? AppleId { get; set; }
+
 
     [Required]
     [MaxLength(20)]

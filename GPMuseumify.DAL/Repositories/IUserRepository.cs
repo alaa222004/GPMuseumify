@@ -13,4 +13,6 @@ public interface IUserRepository
     Task<bool> DeleteAsync(Guid id);
     Task<bool> EmailExistsAsync(string email);
     Task<User?> GetByResetTokenAsync(string resetToken);
+    Task<User?> GetByGoogleIdAsync(string googleId);
+    Task<User?> GetByAppleIdAsync(string appleId);
 }
