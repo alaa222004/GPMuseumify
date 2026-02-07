@@ -64,6 +64,16 @@ namespace Museumify.DAL.Repositories
                     u.ResetPasswordExpiry != null &&
                     u.ResetPasswordExpiry > DateTime.UtcNow);
         }
+
+        public async Task<User?> GetByGoogleIdAsync(string googleId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.GoogleId == googleId);
+        }
+
+        public async Task<User?> GetByAppleIdAsync(string appleId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.AppleId == appleId);
+        }
     }
 }
 

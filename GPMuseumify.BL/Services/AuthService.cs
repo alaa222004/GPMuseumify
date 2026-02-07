@@ -1,15 +1,24 @@
 ﻿
-
 using Google.Apis.Auth;
-using Microsoft.Extensions.Caching.Memory;
+using Google.Apis.Http;
 using GPMuseumify.BL.DTOs.Auth;
 using GPMuseumify.BL.Interfaces;
 using GPMuseumify.DAL.Models;
 using GPMuseumify.DAL.Repositories;
-using Microsoft.Extensions.Configuration;
-using System.IdentityModel.Tokens.Jwt;
-using Ninject.Activation.Caching;
 using Lucene.Net.Util.Cache;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Ninject.Activation.Caching;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Net.Http;
+using System.Net.Http;
+
+
+using System.Text.Json;
+//using IHttpClientFactory = Google.Apis.Http.IHttpClientFactory;
 
 
 namespace GPMuseumify.BL.Services;
@@ -363,25 +372,33 @@ public class AuthService : IAuthService
 {
     private const string ResetTokenCachePrefix = "reset:";
     private static readonly TimeSpan ResetTokenExpiry = TimeSpan.FromMinutes(10);
+    private const string AppleJwksUrl = "https://appleid.apple.com/auth/keys";
+    private const string AppleIssuer = "https://appleid.apple.com";
+
+
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
     private readonly IEmailService _emailService;
     private readonly IConfiguration _configuration;
     private readonly IMemoryCache _cache;
+    private readonly System.Net.Http.IHttpClientFactory _httpClientFactory;
 
     public AuthService(
         IUserRepository userRepository,
         ITokenService tokenService,
         IEmailService emailService,
          IConfiguration configuration,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            System.Net.Http.IHttpClientFactory httpClientFactory)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
         _emailService = emailService;
         _configuration = configuration;
         _cache = cache;
+        _httpClientFactory = httpClientFactory;
     }
+
 
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
     {
@@ -467,7 +484,8 @@ public class AuthService : IAuthService
             Name = user.Name,
             Email = user.Email,
             Role = user.Role,
-            IsEmailVerified = user.IsEmailVerified
+            IsEmailVerified = user.IsEmailVerified,
+            PhoneNumber = user.PhoneNumber
         };
     }
 
@@ -790,10 +808,211 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDto?> SocialLoginAsync(SocialLoginDto socialLoginDto)
     {
-        // TODO: Implement Google/Apple token validation
-        // For now, return null (to be implemented)
-        throw new NotImplementedException("Social login is not yet implemented");
+        var provider = socialLoginDto.Provider?.Trim().ToLowerInvariant();
+        if (provider != "google" && provider != "apple")
+            return null;
+
+        string email;
+        string name;
+        string providerUserId;
+
+        if (provider == "google")
+        {
+            var googlePayload = await ValidateGoogleTokenAsync(socialLoginDto.Token);
+            if (googlePayload == null) return null;
+
+            email = googlePayload.Email ?? "";
+            name = googlePayload.Name ?? googlePayload.Email ?? "Google User";
+            providerUserId = googlePayload.Subject ?? "";
+        }
+        else
+        {
+            var applePayload = await ValidateAppleTokenAsync(socialLoginDto.Token);
+            if (applePayload == null) return null;
+
+            // unpack the nullable tuple properly
+            var (subject, emailValue, nameValue) = applePayload.Value;
+
+            providerUserId = subject;
+            email = emailValue ?? $"{subject}@privaterelay.appleid.com";
+            name = nameValue ?? "Apple User";
+        }
+
+        if (string.IsNullOrEmpty(providerUserId)) return null;
+
+        // Check if user exists by provider ID
+        User? user = provider == "google"
+            ? await _userRepository.GetByGoogleIdAsync(providerUserId)
+            : await _userRepository.GetByAppleIdAsync(providerUserId);
+
+        // fallback: check by email
+        if (user == null && !string.IsNullOrEmpty(email))
+            user = await _userRepository.GetByEmailAsync(email);
+
+        // Create new user if not exists
+        if (user == null)
+        {
+            if (string.IsNullOrEmpty(email)) return null;
+
+            user = new User
+            {
+                Name = name,
+                Email = email.ToLower(),
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString("N")), // random password
+                Role = "User",
+                IsEmailVerified = true,
+                GoogleId = provider == "google" ? providerUserId : null,
+                AppleId = provider == "apple" ? providerUserId : null
+            };
+
+            user = await _userRepository.CreateAsync(user);
+        }
+        else
+        {
+            // update provider ID if missing
+            if (provider == "google" && string.IsNullOrEmpty(user.GoogleId))
+            {
+                user.GoogleId = providerUserId;
+                await _userRepository.UpdateAsync(user);
+            }
+            else if (provider == "apple" && string.IsNullOrEmpty(user.AppleId))
+            {
+                user.AppleId = providerUserId;
+                await _userRepository.UpdateAsync(user);
+            }
+        }
+
+        var token = _tokenService.GenerateToken(user);
+
+        return new AuthResponseDto
+        {
+            UserId = user.Id,
+            Token = token,
+            Name = user.Name,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber, // ensure AuthResponseDto يحتوي على PhoneNumber
+            Role = user.Role,
+            IsEmailVerified = user.IsEmailVerified
+        };
     }
+
+    private async Task<GoogleJsonWebSignature.Payload?> ValidateGoogleTokenAsync(string idToken)
+    {
+        try
+        {
+            var clientId = _configuration["Auth:Google:ClientId"];
+            var settings = new GoogleJsonWebSignature.ValidationSettings();
+            if (!string.IsNullOrEmpty(clientId))
+                settings.Audience = new[] { clientId };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
+            return payload;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private async Task<(string Subject, string? Email, string? Name)?> ValidateAppleTokenAsync(string idToken)
+    {
+        try
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(idToken);
+            var kid = jwt.Header.Kid;
+            if (string.IsNullOrEmpty(kid)) return null;
+
+            var signingKey = await GetAppleSigningKeyAsync(kid);
+            if (signingKey == null) return null;
+
+            var clientId = _configuration["Auth:Apple:ClientId"] ?? _configuration["Auth:Apple:BundleId"];
+            var validationParams = new TokenValidationParameters
+            {
+                ValidIssuer = AppleIssuer,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.FromMinutes(5)
+            };
+            if (!string.IsNullOrEmpty(clientId))
+            {
+                validationParams.ValidateAudience = true;
+                validationParams.ValidAudience = clientId;
+            }
+            else
+                validationParams.ValidateAudience = false;
+
+            var principal = handler.ValidateToken(idToken, validationParams, out _);
+            var sub = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? principal.FindFirst("sub")?.Value;
+            var email = principal.FindFirst(ClaimTypes.Email)?.Value ?? principal.FindFirst("email")?.Value;
+            var name = principal.FindFirst(ClaimTypes.Name)?.Value ?? principal.FindFirst("name")?.Value;
+
+            if (string.IsNullOrEmpty(sub)) return null;
+            return (sub, email, name);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private async Task<SecurityKey?> GetAppleSigningKeyAsync(string kid)
+    {
+        var cacheKey = $"apple_jwks_{kid}";
+        if (_cache.TryGetValue(cacheKey, out SecurityKey? cached)) return cached;
+
+        using var http = _httpClientFactory.CreateClient();
+        var json = await http.GetStringAsync(AppleJwksUrl);
+        using var doc = JsonDocument.Parse(json);
+        var keys = doc.RootElement.GetProperty("keys");
+        foreach (var key in keys.EnumerateArray())
+        {
+            if (key.TryGetProperty("kid", out var keyKid) && keyKid.GetString() == kid)
+            {
+                var n = key.GetProperty("n").GetString();
+                var e = key.GetProperty("e").GetString();
+                if (string.IsNullOrEmpty(n) || string.IsNullOrEmpty(e)) continue;
+
+                var nBytes = Base64UrlDecode(n);
+                var eBytes = Base64UrlDecode(e);
+                if (nBytes == null || eBytes == null) continue;
+
+                var rsa = System.Security.Cryptography.RSA.Create();
+                rsa.ImportParameters(new System.Security.Cryptography.RSAParameters
+                {
+                    Modulus = nBytes,
+                    Exponent = eBytes
+                });
+
+                var securityKey = new RsaSecurityKey(rsa) { KeyId = kid };
+                _cache.Set(cacheKey, securityKey, TimeSpan.FromHours(24));
+                return securityKey;
+            }
+        }
+
+        return null;
+    }
+
+    private static byte[]? Base64UrlDecode(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return null;
+        var base64 = input.Replace('-', '+').Replace('_', '/');
+        switch (base64.Length % 4)
+        {
+            case 2: base64 += "=="; break;
+            case 3: base64 += "="; break;
+        }
+        try
+        {
+            return Convert.FromBase64String(base64);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
 
     private string GenerateVerificationCode()
     {

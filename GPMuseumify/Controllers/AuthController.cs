@@ -292,10 +292,10 @@ public class AuthController : ControllerBase
 
             return Ok(result);
         }
-        catch (NotImplementedException)
-        {
-            return StatusCode(501, new { message = "Social login is not yet implemented" });
-        }
+        //catch (NotImplementedException)
+        //{
+        //    return StatusCode(501, new { message = "Social login is not yet implemented" });
+        //}
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during social login");
