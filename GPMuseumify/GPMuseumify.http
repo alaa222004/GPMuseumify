@@ -6,10 +6,10 @@
 POST {{GPMuseumify_HostAddress}}/api/auth/register
 Content-Type: application/json
 {
-  "name": "mena",
-  "email": "mennatallaadel6@gmail.com",
-  "password": "Password12366",
-  "phoneNumber": "0123456789"
+  "name": "alaa",
+  "email": "alaasamer222004@gmail.com",
+  "password": "alaa12345",
+  "phoneNumber": "01033264791"
 
 }
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "password": "newPassword123"
+  "password": "alaa12345"
 }
 
 ### 3️⃣ Verify Email 
@@ -29,8 +29,8 @@ POST {{GPMuseumify_HostAddress}}/api/auth/verify-email
 Content-Type: application/json
 
 {
-  "email": "mennatallaadel6@gmail.com",
-  "code": "8898"
+  "email": "alaasamer222004@gmail.com",
+  "code": "9476"
 }
 
 ### 4️⃣ Resend Verification Code 
@@ -113,6 +113,16 @@ Content-Type: application/json
 {
   "name": "Menna Hisham",
   "phoneNumber": "+20 01012345678"
+}
+
+
+## delete account
+POST {{Museumify_HostAddress}}/api/users/me/delete-account
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+
+{
+  "password": "123456"
 }
 
 

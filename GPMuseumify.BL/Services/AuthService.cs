@@ -775,6 +775,17 @@ public class AuthService : IAuthService
         await _userRepository.UpdateAsync(user);
         return true;
     }
+    public async Task<bool> DeleteAccountAsync(Guid userId, DeleteAccountDto dto)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+            return false;
+        if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+            return false;
+
+        await _userRepository.DeleteAsync(userId);
+        return true;
+    }
 
 
     public async Task<AuthResponseDto?> SocialLoginAsync(SocialLoginDto socialLoginDto)
