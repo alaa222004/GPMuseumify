@@ -163,6 +163,7 @@ namespace Museumify
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseCors("AllowMobileApp");
 
