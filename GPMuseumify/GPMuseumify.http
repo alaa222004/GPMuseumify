@@ -1,4 +1,4 @@
-﻿### Base URL
+### Base URL
 @GPMuseumify_HostAddress = http://localhost:5004
 
 ################################################################
@@ -114,7 +114,7 @@ Content-Type: application/json
 
 
 ## delete account
-POST {{Museumify_HostAddress}}/api/users/me/delete-account
+POST {{GPMuseumify_HostAddress}}/api/users/me/delete-account
 Authorization: Bearer {{Token}}
 Content-Type: application/json
 
@@ -124,10 +124,88 @@ Content-Type: application/json
 
 
 ## @name login
-POST {{Museumify_HostAddress}}/api/auth/login
+POST {{GPMuseumify_HostAddress}}/api/auth/login
 Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
   "password": "123456"
 }
+
+
+################################################################
+### ---------- Tests: Search / Favorites / History (بعد تطبيق الـ migration) ----------
+### استبدلي @UserId بالـ user id من الـ login response (أو من الـ JWT claim "sub")
+@UserId = f3505092-1aa0-4ffc-b3c7-992c6346a87a
+
+### 1) Search تماثيل (يُرجع الـ seeded: أخناتون، نفرتيتي، رمسيس)
+POST {{GPMuseumify_HostAddress}}/api/search
+Content-Type: application/json
+
+{
+  "query": "ram",
+  "type": "statue",
+  "page": 1,
+  "pageSize": 10
+}
+
+### 2) Search متاحف (يُرجع أهرامات الجيزة)
+POST {{GPMuseumify_HostAddress}}/api/search
+Content-Type: application/json
+
+{
+  "query": "pyramid",
+  "type": "museum",
+  "page": 1,
+  "pageSize": 10
+}
+
+### 3) إضافة تمثال للمفضلة (استخدمي statueId من نتيجة البحث أو من الـ seed)
+POST {{GPMuseumify_HostAddress}}/api/users/6afe1bc6-85da-417f-85b3-7f738dee9751/favorites
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2YWZlMWJjNi04NWRhLTQxN2YtODViMy03ZjczOGRlZTk3NTEiLCJlbWFpbCI6ImFsYWFzYW1lcjIyMjAwNEBnbWFpbC5jb20iLCJzdWIiOiI2YWZlMWJjNi04NWRhLTQxN2YtODViMy03ZjczOGRlZTk3NTEiLCJ1bmlxdWVfbmFtZSI6ImFsYWEiLCJyb2xlIjoiVXNlciIsIklzRW1haWxWZXJpZmllZCI6IlRydWUiLCJuYmYiOjE3NzA2NzQzNjQsImV4cCI6MTc3MDc2MDc2NCwiaWF0IjoxNzcwNjc0MzY0LCJpc3MiOiJNdXNldW1pZnlBUEkiLCJhdWQiOiJNdXNldW1pZnlBcHAifQ.cSPvoQsPi3QvqHqJ6ly8_yIxcYD0bJ1t-qg55Y2Mpgc
+Content-Type: application/json
+
+{
+  "statueId": "22222222-2222-2222-2222-222222222222",
+  "museumId": null
+}
+
+### 4) إضافة متحف للمفضلة
+POST {{GPMuseumify_HostAddress}}/api/users/{{UserId}}/favorites
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+
+{
+  "statueId": null,
+  "museumId": "44444444-4444-4444-4444-444444444444"
+}
+
+### 5) جلب قائمة المفضلة (هتظهر الصور في ThumbnailUrl / ImageUrl)
+GET {{GPMuseumify_HostAddress}}/api/users/{{UserId}}/favorites?page=1&pageSize=20
+Authorization: Bearer {{Token}}
+
+### 6) إضافة للهيستوري (تمثال)
+POST {{GPMuseumify_HostAddress}}/api/History?userId={{UserId}}
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+
+{
+  "statueId": "11111111-1111-1111-1111-111111111111",
+  "museumId": null,
+  "searchType": "statue"
+}
+
+### 7) جلب الهيستوري (هتظهر الصور في ThumbnailUrl)
+GET {{GPMuseumify_HostAddress}}/api/History?userId={{UserId}}&page=1&pageSize=10
+Authorization: Bearer {{Token}}
+
+### 8) روابط الصور مباشرة (للتحقق أن الصور تخدم)
+# GET {{GPMuseumify_HostAddress}}/images/statues/nefertiti.jpg
+# GET {{GPMuseumify_HostAddress}}/images/museums/pyramids.jpg
+
+### ---------- IDs الجديدة (بعد تطبيق migration SeedMoreStatuesAndMuseums) ----------
+# تماثيل: 55555555-5555-5555-5555-555555550001 (توت عنخ آمون), 550002 (Pharaoh Bust), 550003 (Pharaoh Bust II),
+# 550004 (Pharaoh Head), 550005 (Pharaoh Standing), 550006 (Ramses Standing), 550007 (Pharaoh in Museum),
+# 550008 (أبو سمبل), 550009 (Nefertiti Stylized), 55000a (Nefertiti Collage), 55000b (Nefertiti Detail)
+# متاحف: 66666666-6666-6666-6666-666666660001 (Grand Egyptian Museum), 660002 (Egyptian Temple),
+# 660003 (Mummies), 660004 (Mummy Close-up), 660005 (Statue Collection)
