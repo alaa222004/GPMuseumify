@@ -154,7 +154,8 @@ public class FavoritesController : ControllerBase
         }
     }
 
-    /// <summary>إزالة خبر/حدث من المفضلة.</summary>
+    // <summary>إزالة خبر/حدث من المفضلة.</summary>
+
     [HttpDelete("news/by-item")]
     public async Task<IActionResult> RemoveFavoriteNewsByItem(Guid userId, [FromQuery] string itemId, [FromQuery] string itemType = "news")
     {
@@ -167,5 +168,7 @@ public class FavoritesController : ControllerBase
         if (!removed)
             return NotFound(new { message = "Favorite not found." });
         return Ok(new { message = "Removed from favorites." });
+
+
     }
-}
+    }
