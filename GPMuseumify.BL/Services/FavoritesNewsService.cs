@@ -76,10 +76,15 @@ public class FavoritesNewsService:IFavoritesNewsService
         return await MapToDtoAsync(created);
     }
 
-    public async Task<bool> RemoveFavoriteNewsAsync(Guid userId, string itemId, string itemType)
+    public async Task<bool> RemoveFavoriteNewsAsync(Guid userId, string itemId ,string itemType)
     {
-        return await _repository.RemoveAsync(userId, itemId, itemType);
+        return await _repository.RemoveAsync(userId, itemId,itemType);
     }
+
+
+
+
+
 
     public async Task<bool> IsFavoriteNewsAsync(Guid userId, string itemId, string itemType)
     {

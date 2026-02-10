@@ -161,12 +161,12 @@ Content-Type: application/json
 }
 
 ### 3) إضافة تمثال للمفضلة (استخدمي statueId من نتيجة البحث أو من الـ seed)
-POST {{GPMuseumify_HostAddress}}/api/users/6afe1bc6-85da-417f-85b3-7f738dee9751/favorites
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2YWZlMWJjNi04NWRhLTQxN2YtODViMy03ZjczOGRlZTk3NTEiLCJlbWFpbCI6ImFsYWFzYW1lcjIyMjAwNEBnbWFpbC5jb20iLCJzdWIiOiI2YWZlMWJjNi04NWRhLTQxN2YtODViMy03ZjczOGRlZTk3NTEiLCJ1bmlxdWVfbmFtZSI6ImFsYWEiLCJyb2xlIjoiVXNlciIsIklzRW1haWxWZXJpZmllZCI6IlRydWUiLCJuYmYiOjE3NzA2NzQzNjQsImV4cCI6MTc3MDc2MDc2NCwiaWF0IjoxNzcwNjc0MzY0LCJpc3MiOiJNdXNldW1pZnlBUEkiLCJhdWQiOiJNdXNldW1pZnlBcHAifQ.cSPvoQsPi3QvqHqJ6ly8_yIxcYD0bJ1t-qg55Y2Mpgc
+POST {{GPMuseumify_HostAddress}}/api/users/{{UserId}}/favorites
+Authorization: Bearer {{Token}}
 Content-Type: application/json
 
 {
-  "statueId": "22222222-2222-2222-2222-222222222222",
+  "statueId": "55555555-5555-5555-5555-555555550001",
   "museumId": null
 }
 
