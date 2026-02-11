@@ -209,3 +209,5 @@ Authorization: Bearer {{Token}}
 # 550008 (أبو سمبل), 550009 (Nefertiti Stylized), 55000a (Nefertiti Collage), 55000b (Nefertiti Detail)
 # متاحف: 66666666-6666-6666-6666-666666660001 (Grand Egyptian Museum), 660002 (Egyptian Temple),
 # 660003 (Mummies), 660004 (Mummy Close-up), 660005 (Statue Collection)
+
+GET {{GPMuseumify_HostAddress}}/api/news

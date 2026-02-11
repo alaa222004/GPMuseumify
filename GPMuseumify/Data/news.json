@@ -18,18 +18,20 @@
         "titleAr": "اكتشاف سبعة قطع أثرية نادرة من العصر الفرعوني في كفر الشيخ",
         "description": "Archaeologists have discovered seven rare artifacts from the Pharaonic era in Kafr El-Sheikh. The discovery includes pottery, jewelry, and tools dating back thousands of years.",
         "descriptionAr": "اكتشف علماء الآثار سبعة قطع أثرية نادرة من العصر الفرعوني في كفر الشيخ. الاكتشاف يشمل فخار ومجوهرات وأدوات تعود لآلاف السنين.",
-        "imageUrl": "https://example.com/images/kafr-elsheikh.jpg",
+        "imageUrl": "https://th.bing.com/th/id/OIP.1A7SEXzQKy__fRDYBcEmgwHaE8?w=234&h=180&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3",
+
         "category": "archaeology",
         "publishedAt": "2024-01-14T14:30:00Z",
         "sourceName": "Museumify"
       },
       {
         "id": "3",
-        "title": "Seven rare Pharaonic-era artifacts found in Kafr El-Sheikh",
-        "titleAr": "اكتشاف سبعة قطع أثرية نادرة من العصر الفرعوني في كفر الشيخ",
-        "description": "Archaeologists have discovered seven rare artifacts from the Pharaonic era in Kafr El-Sheikh. The discovery includes pottery, jewelry, and tools dating back thousands of years.",
-        "descriptionAr": "اكتشف علماء الآثار سبعة قطع أثرية نادرة من العصر الفرعوني في كفر الشيخ. الاكتشاف يشمل فخار ومجوهرات وأدوات تعود لآلاف السنين.",
-        "imageUrl": "https://example.com/images/kafr-elsheikh.jpg",
+        "title": "Golden Statue of Ancient Egyptian Deity Unearthed in Luxor",
+        "titleAr": "اكتشاف تمثال ذهبي لإله مصري قديم في الأقصر",
+        "description": "A joint Egyptian archaeological mission has uncovered a small golden statue of an ancient Egyptian deity during excavation work in Luxor. The artifact is believed to date back to the New Kingdom and was found inside a sealed burial chamber along with ceremonial tools and amulets.",
+        "descriptionAr": "اكتشفت بعثة أثرية مصرية تمثالاً ذهبياً صغيراً لأحد الآلهة المصرية القديمة أثناء أعمال الحفر في الأقصر. ويُعتقد أن القطعة الأثرية تعود إلى عصر الدولة الحديثة، وقد عُثر عليها داخل حجرة دفن مغلقة إلى جانبhttps://www.bing.com/images/search?view=detailV2&ccid=axVV7%2b4c&id=30090CB5D2CC04C8F702858F62A564AB002870A7&thid=OIP.axVV7-4cuv0gTDE7DY0SRQAAAA&mediaurl=https%3a%2f%2fpng.pngtree.com%2fthumb_back%2ffw800%2fbackground%2f20221114%2fpngtree-osiris-statue-in-pharaoh-temple-sacred-place-egyptian-mythology-pharaoh-photo-image_23204726.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.6b1555efee1cbafd204c313b0d8d1245%3frik%3dp3AoAKtkpWKPhQ%26pid%3dImgRaw%26r%3d0&exph=237&expw=474&q=%d8%aa%d9%85%d8%ab%d8%a7%d9%84+%d9%81%d8%b1%d8%b9%d9%88%d9%86+save+link+in+json+file&FORM=IRPRST&ck=2BA0555BAE17F4590EEBF831F73774E8&selectedIndex=8&itb=0 أدوات طقسية وتمائم.",
+        "imageUrl": "https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/49581/file-manager/ancient-egyptian-artifacts.jpg",
+
         "category": "archaeology",
         "publishedAt": "2024-01-14T14:30:00Z",
         "sourceName": "Museumify"
@@ -42,7 +44,7 @@
         "titleAr": "معرض خاص: كنوز مصر القديمة",
         "description": "Join us for a special exhibition showcasing rare artifacts from ancient Egypt. This exclusive event features items never before displayed to the public.",
         "descriptionAr": "انضم إلينا في معرض خاص يعرض قطع أثرية نادرة من مصر القديمة. هذا الحدث الحصري يعرض قطع لم تُعرض للجمهور من قبل.",
-        "imageUrl": "https://example.com/images/exhibition.jpg",
+        "imageUrl": "https://www.discoverhongkong.com/content/dam/dhk/events/images/en/833/83318/hkpm_g9_gallery_04_1024x768-1119143956.jpg",
         "category": "exhibition",
         "eventDate": "2024-02-15T18:00:00Z",
         "location": "Egyptian Museum, Cairo",
@@ -56,7 +58,8 @@
         "titleAr": "مؤتمر الآثار 2024",
         "description": "Annual conference bringing together leading archaeologists and researchers to discuss the latest discoveries and research in Egyptian archaeology.",
         "descriptionAr": "مؤتمر سنوي يجمع كبار علماء الآثار والباحثين لمناقشة أحدث الاكتشافات والأبحاث في الآثار المصرية.",
-        "imageUrl": "https://example.com/images/conference.jpg",
+        "imageUrl": "https://www.ees.ac.uk/static/680262fb8c233def8d59acbe2595215f/790x530_highestquality__4a7c7e45a350/6802-GetImage.jpg",
+
         "category": "conference",
         "eventDate": "2024-03-20T10:00:00Z",
         "location": "Cairo University",
