@@ -210,4 +210,10 @@ Authorization: Bearer {{Token}}
 # متاحف: 66666666-6666-6666-6666-666666660001 (Grand Egyptian Museum), 660002 (Egyptian Temple),
 # 660003 (Mummies), 660004 (Mummy Close-up), 660005 (Statue Collection)
 
+### 9) Delete news favorite by favoriteId
+# DELETE {{GPMuseumify_HostAddress}}/api/users/{{UserId}}/favorites/news/{favoriteId}
+# Example (replace {favoriteId} with actual guid from GET favorites/news response):
+# DELETE {{GPMuseumify_HostAddress}}/api/users/{{UserId}}/favorites/news/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+# Authorization: Bearer {{Token}}
+
 GET {{GPMuseumify_HostAddress}}/api/news

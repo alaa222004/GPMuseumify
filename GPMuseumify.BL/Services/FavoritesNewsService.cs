@@ -1,4 +1,4 @@
-﻿
+
 
 using GPMuseumify.BL.DTOs.Favorites;
 using GPMuseumify.BL.DTOs.History;
@@ -76,9 +76,14 @@ public class FavoritesNewsService:IFavoritesNewsService
         return await MapToDtoAsync(created);
     }
 
-    public async Task<bool> RemoveFavoriteNewsAsync(Guid userId, string itemId ,string itemType)
+    public async Task<bool> RemoveFavoriteNewsAsync(Guid userId, string itemId, string itemType)
     {
-        return await _repository.RemoveAsync(userId, itemId,itemType);
+        return await _repository.RemoveAsync(userId, itemId, itemType);
+    }
+
+    public async Task<bool> RemoveFavoriteNewsByIdAsync(Guid userId, Guid favoriteId)
+    {
+        return await _repository.RemoveByIdAsync(userId, favoriteId);
     }
 
 

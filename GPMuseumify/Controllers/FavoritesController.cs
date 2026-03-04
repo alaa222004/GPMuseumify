@@ -1,4 +1,4 @@
-﻿
+
 
 namespace GPMuseumify.Controllers;
 using Microsoft.AspNetCore.Authorization;
@@ -154,8 +154,17 @@ public class FavoritesController : ControllerBase
         }
     }
 
-    // <summary>إزالة خبر/حدث من المفضلة.</summary>
+    /// <summary>إزالة خبر/حدث من المفضلة بالـ favoriteId.</summary>
+    [HttpDelete("news/{favoriteId:guid}")]
+    public async Task<IActionResult> RemoveFavoriteNews(Guid userId, Guid favoriteId)
+    {
+        var removed = await _favoritesNewsService.RemoveFavoriteNewsByIdAsync(userId, favoriteId);
+        if (!removed)
+            return NotFound(new { message = "Favorite news not found." });
+        return Ok(new { message = "Removed from favorites." });
+    }
 
+    /// <summary>إزالة خبر/حدث من المفضلة بـ itemId و itemType.</summary>
     [HttpDelete("news/by-item")]
     public async Task<IActionResult> RemoveFavoriteNewsByItem(Guid userId, [FromQuery] string itemId, [FromQuery] string itemType = "news")
     {

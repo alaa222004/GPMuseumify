@@ -1,4 +1,4 @@
-﻿
+
 using GPMuseumify.DAL.Configuration;
 using GPMuseumify.DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +53,17 @@ public class UserFavoriteNewsRepository : IUserFavoriteNewsRepository
     {
     var fav=await _context.UserFavoriteNews
             .FirstOrDefaultAsync(f=>f.UserId == userId && f.ItemId == itemId && f.ItemType == itemType);
+        if (fav == null)
+            return false;
+        _context.UserFavoriteNews.Remove(fav);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> RemoveByIdAsync(Guid userId, Guid favoriteId)
+    {
+        var fav = await _context.UserFavoriteNews
+            .FirstOrDefaultAsync(f => f.Id == favoriteId && f.UserId == userId);
         if (fav == null)
             return false;
         _context.UserFavoriteNews.Remove(fav);
