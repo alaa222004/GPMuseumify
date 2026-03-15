@@ -67,8 +67,7 @@ namespace Museumify
             builder.Services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
             builder.Services.AddScoped<IUserFavoriteRepository, UserFavoriteRepository>();
             builder.Services.AddScoped<IUserFavoriteNewsRepository,UserFavoriteNewsRepository>();
-
-
+            builder.Services.AddScoped<IStatueRepository, StatueRepository>();
 
             // Services
             builder.Services.AddScoped<ITokenService, TokenService>();

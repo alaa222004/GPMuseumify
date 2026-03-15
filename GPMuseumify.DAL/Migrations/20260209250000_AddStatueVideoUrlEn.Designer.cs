@@ -4,6 +4,7 @@ using GPMuseumify.DAL.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GPMuseumify.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260209250000_AddStatueVideoUrlEn")]
+    partial class AddStatueVideoUrlEn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,13 +302,6 @@ namespace GPMuseumify.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ResetPasswordToken")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-                    b.Property<string>("GoogleId")
-                       .HasMaxLength(255)
-                       .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("AppleId")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 

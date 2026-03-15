@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace GPMuseumify.BL.DTOs.History
 {
@@ -14,6 +14,7 @@ namespace GPMuseumify.BL.DTOs.History
         public string? Description { get; set; }
         public string? ThumbnailUrl { get; set; }// صورة مصغرة
         public string? VideoUrl { get; set; }
+        public string? VideoUrlEn { get; set; }
         public DateTime ViewedAt { get; set; }
         public string? SearchType { get; set; }
     }

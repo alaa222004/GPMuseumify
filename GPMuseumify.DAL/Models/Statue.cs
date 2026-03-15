@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace GPMuseumify.DAL.Models;
 
@@ -30,6 +30,10 @@ public class Statue
     [Required]
     [MaxLength(500)]
     public string VideoUrl { get; set; } = string.Empty;
+
+    /// <summary>Optional second video URL (e.g. English version).</summary>
+    [MaxLength(500)]
+    public string? VideoUrlEn { get; set; }
 
     [MaxLength(500)]
     public string? ThumbnailUrl { get; set; }
