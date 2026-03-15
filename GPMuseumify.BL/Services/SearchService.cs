@@ -1,18 +1,27 @@
-﻿
+
+using GPMuseumify.BL.DTOs.History;
 using GPMuseumify.BL.DTOs.Search;
 using GPMuseumify.BL.Interfaces;
 using GPMuseumify.DAL.Repositories;
-using GPMuseumify.BL.DTOs.History;
 
 namespace GPMuseumify.BL.Services;
 
 public class SearchService : ISearchService
 {
-    private const int MaxPageSize = 50; //3shan ma yb2ash fyh overload 3ala el database
-    private readonly ISearchRepository _searchRepository; // Dependency Injection of the repository
-    public SearchService(ISearchRepository searchRepository)
+    private const int MaxPageSize = 50;
+    private readonly ISearchRepository _searchRepository;
+    private readonly IStatueRepository _statueRepository;
+
+    public SearchService(ISearchRepository searchRepository, IStatueRepository statueRepository)
     {
         _searchRepository = searchRepository;
+        _statueRepository = statueRepository;
+    }
+
+    public async Task<SearchResultDto?> GetStatueByIdAsync(Guid statueId)
+    {
+        var statue = await _statueRepository.GetByIdAsync(statueId);
+        return statue == null ? null : MapStatueToDto(statue);
     }
     
    public async Task<SearchResponseDto> SearchAsync(SearchRequestDto request)
@@ -87,7 +96,9 @@ public class SearchService : ISearchService
             ThumbnailUrl = statue.ThumbnailUrl,
             Type = "statue",
             HistoricalPeriod = statue.HistoricalPeriod,
-            Museum = statue.Museum
+            Museum = statue.Museum,
+            VideoUrl = statue.VideoUrl,
+            VideoUrlEn = statue.VideoUrlEn
         };
     }
 

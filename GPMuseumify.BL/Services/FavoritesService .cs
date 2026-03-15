@@ -1,4 +1,4 @@
-﻿
+
 
 using GPMuseumify.BL.DTOs.Favorites;
 using GPMuseumify.BL.DTOs.History;
@@ -107,6 +107,7 @@ public class FavoritesService: IFavoritesService
             ThumbnailUrl = thumbnail,
             ImageUrl = imageUrl,
             VideoUrl = f.Statue?.VideoUrl,
+            VideoUrlEn = f.Statue?.VideoUrlEn,
             CreatedAt = f.CreatedAt
         };
     }

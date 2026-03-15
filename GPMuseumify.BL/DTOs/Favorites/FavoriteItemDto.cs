@@ -1,4 +1,4 @@
-﻿
+
 
 namespace GPMuseumify.BL.DTOs.Favorites;
 
@@ -15,6 +15,7 @@ public class FavoriteItemDto
     public string? ThumbnailUrl { get; set; }
     public string? ImageUrl { get; set; }
     public string? VideoUrl { get; set; }
+    public string? VideoUrlEn { get; set; }
     public DateTime CreatedAt { get; set; }
 
 

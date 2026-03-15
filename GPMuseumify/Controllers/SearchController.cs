@@ -1,4 +1,4 @@
-﻿using GPMuseumify.BL.DTOs.Search;
+using GPMuseumify.BL.DTOs.Search;
 using GPMuseumify.BL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -83,6 +83,17 @@ public class SearchController : ControllerBase
             _logger.LogError(ex, "Error fetching suggestions");
             return StatusCode(500, new { message = "Unable to fetch suggestions at this time." });
         }
+    }
+
+    /// <summary>جلب تفاصيل تمثال بالـ Id — استخدميه من Flutter بعد scan/upload لما التعرف يرجع statueId (مثلاً حتشبسوت).</summary>
+    [HttpGet("statues/{statueId:guid}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetStatueById(Guid statueId)
+    {
+        var statue = await _searchService.GetStatueByIdAsync(statueId);
+        if (statue == null)
+            return NotFound(new { message = "Statue not found." });
+        return Ok(statue);
     }
 }
 

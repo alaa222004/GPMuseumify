@@ -1,4 +1,4 @@
-﻿
+
 namespace GPMuseumify.BL.DTOs.Search;
 
 public class SearchResultDto
@@ -16,5 +16,6 @@ public class SearchResultDto
     public string Type { get; set; } = string.Empty; // "statue" or "museum"
     public string? HistoricalPeriod { get; set; } // For statues
     public string? Museum { get; set; } // For statues
-
+    public string? VideoUrl { get; set; }
+    public string? VideoUrlEn { get; set; }
 }

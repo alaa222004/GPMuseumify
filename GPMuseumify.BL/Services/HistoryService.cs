@@ -1,4 +1,4 @@
-﻿
+
 using GPMuseumify.BL.DTOs.History;
 using GPMuseumify.BL.Interfaces;
 using GPMuseumify.DAL.Models;
@@ -48,6 +48,7 @@ public class HistoryService : IHistoryService
         var description = history.Statue?.Description ?? history.Museum?.Description;
         var thumbnail = history.Statue?.ThumbnailUrl ?? history.Museum?.ImageUrl;
         var videoUrl = history.Statue?.VideoUrl;
+        var videoUrlEn = history.Statue?.VideoUrlEn;
 
         return new UserHistoryItemDto
         {
@@ -61,6 +62,7 @@ public class HistoryService : IHistoryService
             Description = description,
             ThumbnailUrl = thumbnail,
             VideoUrl = videoUrl,
+            VideoUrlEn = videoUrlEn,
             ViewedAt = history.ViewedAt,
             SearchType = history.SearchType
         };
