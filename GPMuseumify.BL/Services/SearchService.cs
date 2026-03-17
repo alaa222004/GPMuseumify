@@ -3,6 +3,8 @@ using GPMuseumify.BL.DTOs.History;
 using GPMuseumify.BL.DTOs.Search;
 using GPMuseumify.BL.Interfaces;
 using GPMuseumify.DAL.Repositories;
+using GPMuseumify.DAL.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace GPMuseumify.BL.Services;
 
@@ -11,17 +13,48 @@ public class SearchService : ISearchService
     private const int MaxPageSize = 50;
     private readonly ISearchRepository _searchRepository;
     private readonly IStatueRepository _statueRepository;
+    private readonly ApplicationDbContext _context;
 
-    public SearchService(ISearchRepository searchRepository, IStatueRepository statueRepository)
+    public SearchService(
+        ISearchRepository searchRepository,
+        IStatueRepository statueRepository,
+        ApplicationDbContext context)
     {
         _searchRepository = searchRepository;
         _statueRepository = statueRepository;
+        _context = context;
     }
 
     public async Task<SearchResultDto?> GetStatueByIdAsync(Guid statueId)
     {
         var statue = await _statueRepository.GetByIdAsync(statueId);
         return statue == null ? null : MapStatueToDto(statue);
+    }
+
+    public async Task<StatueDetailsDto?> GetStatueDetailsAsync(Guid id, string lang)
+    {
+        var isArabic = string.Equals(lang, "ar", StringComparison.OrdinalIgnoreCase);
+
+        var dto = await _context.Statues
+            .AsNoTracking()
+            .Where(s => s.Id == id && s.IsActive)
+            .Select(s => new StatueDetailsDto
+            {
+                Id = s.Id,
+                Name = isArabic && s.NameAr != null && s.NameAr != string.Empty ? s.NameAr : s.Name,
+                Description = isArabic && s.DescriptionAr != null && s.DescriptionAr != string.Empty
+                    ? s.DescriptionAr
+                    : s.Description,
+                VideoUrl = isArabic || (s.VideoUrlEn == null || s.VideoUrlEn == string.Empty)
+                    ? s.VideoUrl
+                    : s.VideoUrlEn,
+                //StoryUrl = isArabic || (s.StoryUrlEn == null || s.StoryUrlEn == string.Empty)
+                //    ? s.StoryUrl
+                //    : s.StoryUrlEn
+            })
+            .FirstOrDefaultAsync();
+
+        return dto;
     }
     
    public async Task<SearchResponseDto> SearchAsync(SearchRequestDto request)
@@ -98,7 +131,9 @@ public class SearchService : ISearchService
             HistoricalPeriod = statue.HistoricalPeriod,
             Museum = statue.Museum,
             VideoUrl = statue.VideoUrl,
-            VideoUrlEn = statue.VideoUrlEn
+            VideoUrlEn = statue.VideoUrlEn,
+            StoryUrl = statue.StoryUrl,
+            StoryUrlEn = statue.StoryUrlEn
         };
     }
 

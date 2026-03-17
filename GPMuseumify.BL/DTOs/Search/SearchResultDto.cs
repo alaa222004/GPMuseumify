@@ -6,7 +6,7 @@ public class SearchResultDto
     public Guid  Id { get; set; }
     public string Name { get; set; } = string.Empty;
 
-   public string? NameAr { get; set; } 
+    public string? NameAr { get; set; } 
     public string? Description { get; set; } 
     public string? DescriptionAr { get; set; }
     public string? Location { get; set; }
@@ -18,4 +18,6 @@ public class SearchResultDto
     public string? Museum { get; set; } // For statues
     public string? VideoUrl { get; set; }
     public string? VideoUrlEn { get; set; }
+    public string? StoryUrl { get; set; }
+    public string? StoryUrlEn { get; set; }
 }

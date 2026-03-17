@@ -36,6 +36,12 @@ public class Statue
     public string? VideoUrlEn { get; set; }
 
     [MaxLength(500)]
+    public string? StoryUrl { get; set; }
+
+    [MaxLength(500)]
+    public string? StoryUrlEn { get; set; }
+
+    [MaxLength(500)]
     public string? ThumbnailUrl { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
