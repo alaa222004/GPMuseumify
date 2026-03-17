@@ -95,6 +95,22 @@ public class SearchController : ControllerBase
             return NotFound(new { message = "Statue not found." });
         return Ok(statue);
     }
+
+    /// <summary>
+    /// Lightweight media/details endpoint for a single statue, optimized for Flutter.
+    /// GET api/search/statues/{id}/details
+    /// </summary>
+    [HttpGet("statues/{id:guid}/details")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetStatueDetails(Guid id, [FromQuery] string lang = "en")
+    {
+        var details = await _searchService.GetStatueDetailsAsync(id, lang);
+        if (details == null)
+        {
+            return NotFound(new { message = "Statue not found." });
+        }
+        return Ok(details);
+    }
 }
 
 
