@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "password": "alaaaa"
+  "password": "12345678910"
 }
 
 ### 3️⃣ Verify Email 
@@ -58,7 +58,7 @@ Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "code": "9464"
+  "code": "5141"
 }
 
 ### 3️⃣ Reset Password — تغيير الباسورد (بعد ما الـ OTP يتأكد)
@@ -66,9 +66,9 @@ POST {{GPMuseumify_HostAddress}}/api/auth/reset-password
 Content-Type: application/json
 
 {
-  "token": "7ac6ea8c70e54543926967a220f133f1",
-  "newPassword": "1234567",
-  "confirmPassword": "1234567"
+  "token": "1479e8312b0b42fd87b636c8c5311393",
+  "newPassword": "12345678910",
+  "confirmPassword": "12345678910"
 }
 
 ### 7️⃣ Social Login 
@@ -113,7 +113,7 @@ Content-Type: application/json
 }
 
 
-## delete account
+### delete account
 POST {{GPMuseumify_HostAddress}}/api/users/me/delete-account
 Authorization: Bearer {{Token}}
 Content-Type: application/json
@@ -239,4 +239,4 @@ Authorization: Bearer {{Token}}
 ### 10) Get statue by ID (للاستخدام من Flutter بعد scan/upload — يرجع videoUrl و videoUrlEn)
 GET {{GPMuseumify_HostAddress}}/api/search/statues/77777777-7777-7777-7777-777777770001
 
-GET {{GPMuseumify_HostAddress}}/api/news
+# GET {{GPMuseumify_HostAddress}}/api/news
