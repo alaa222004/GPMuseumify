@@ -40,7 +40,9 @@ public class EmailService : IEmailService
             }
 
             using var client = new SmtpClient(smtpHost, smtpPort)
-            {
+            { 
+                ////تعديل 
+                //UseDefaultCredentials = false,
                 EnableSsl = true,
                 Credentials = new NetworkCredential(smtpUsername, smtpPassword)
             };
