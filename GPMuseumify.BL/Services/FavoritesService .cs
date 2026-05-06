@@ -89,6 +89,7 @@ public class FavoritesService: IFavoritesService
         var hasStatue = f.StatueId.HasValue;
         var contentType = hasStatue ? "statue" : "museum";
         var title = f.Statue?.Name ?? f.Museum?.Name;
+        var titleAr = f.Statue?.NameAr ?? f.Museum?.NameAr;
         var subtitle = f.Statue?.HistoricalPeriod ?? f.Museum?.Location;
         var description = f.Statue?.Description ?? f.Museum?.Description;
         var thumbnail = f.Statue?.ThumbnailUrl ?? f.Museum?.ImageUrl;
@@ -102,6 +103,7 @@ public class FavoritesService: IFavoritesService
             MuseumId = f.MuseumId,
             ContentType = contentType,
             Title = title,
+            TitleAr = titleAr,
             Subtitle = subtitle,
             Description = description,
             ThumbnailUrl = thumbnail,

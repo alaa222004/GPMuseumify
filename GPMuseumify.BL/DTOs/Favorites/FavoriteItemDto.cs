@@ -10,6 +10,7 @@ public class FavoriteItemDto
     public Guid? MuseumId { get; set; }
     public string ContentType { get; set; } = "statue";
     public string? Title { get; set; }
+    public string? TitleAr { get; set; }
     public string? Subtitle { get; set; }
     public string? Description { get; set; }
     public string? ThumbnailUrl { get; set; }

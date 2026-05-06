@@ -278,7 +278,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> SocialLogin([FromBody] SocialLoginDto socialLoginDto)
     {
         try
-        {
+        { 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
