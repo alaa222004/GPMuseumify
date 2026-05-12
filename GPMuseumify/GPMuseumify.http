@@ -7,7 +7,7 @@ POST {{GPMuseumify_HostAddress}}/api/auth/register
 Content-Type: application/json
 {
   "name": "alaa",
-  "email": "alaasamer2004@gmail.com",
+  "email": "alaasamer222004@gmail.com",
   "password": "alaa12345",
   "phoneNumber": "01033264791"
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "password": "12345678910"
+  "password": "alaa12345"
 }
 
 ### 3️⃣ Verify Email 
@@ -31,7 +31,7 @@ Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "code": "9476"
+  "code": "3491"
 }
 
 ### 4️⃣ Resend Verification Code 
@@ -98,7 +98,7 @@ Authorization: Bearer {{Token}}
 # من الـ response انسخ "token" وحطّه في @Token تحت عشان Get/Update Profile
 
 ### ---------- Personal Information (بعد اللوجن) ----------
-@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmMzUwNTA5Mi0xYWEwLTRmZmMtYjNjNy05OTJjNjM0NmE4N2EiLCJlbWFpbCI6ImFsYWFzYW1lcjIyMjAwNEBnbWFpbC5jb20iLCJzdWIiOiJmMzUwNTA5Mi0xYWEwLTRmZmMtYjNjNy05OTJjNjM0NmE4N2EiLCJ1bmlxdWVfbmFtZSI6ImFsYWE2Iiwicm9sZSI6IlVzZXIiLCJJc0VtYWlsVmVyaWZpZWQiOiJUcnVlIiwibmJmIjoxNzcwMzQzNTg3LCJleHAiOjE3NzA0Mjk5ODcsImlhdCI6MTc3MDM0MzU4NywiaXNzIjoiTXVzZXVtaWZ5QVBJIiwiYXVkIjoiTXVzZXVtaWZ5QXBwIn0.e4bEA0QaTXREztcGWkyfobJEo-fV8aFVTeHFrbFKXM0
+# @Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmMzUwNTA5Mi0xYWEwLTRmZmMtYjNjNy05OTJjNjM0NmE4N2EiLCJlbWFpbCI6ImFsYWFzYW1lcjIyMjAwNEBnbWFpbC5jb20iLCJzdWIiOiJmMzUwNTA5Mi0xYWEwLTRmZmMtYjNjNy05OTJjNjM0NmE4N2EiLCJ1bmlxdWVfbmFtZSI6ImFsYWE2Iiwicm9sZSI6IlVzZXIiLCJJc0VtYWlsVmVyaWZpZWQiOiJUcnVlIiwibmJmIjoxNzcwMzQzNTg3LCJleHAiOjE3NzA0Mjk5ODcsImlhdCI6MTc3MDM0MzU4NywiaXNzIjoiTXVzZXVtaWZ5QVBJIiwiYXVkIjoiTXVzZXVtaWZ5QXBwIn0.e4bEA0QaTXREztcGWkyfobJEo-fV8aFVTeHFrbFKXM0
 ### Get My Profile — جلب الاسم، الإيميل، رقم التلفون (اللي اتخزنوا وقت الـ Register)
 GET {{GPMuseumify_HostAddress}}/api/users/me/profile
 Authorization: Bearer {{Token}}
@@ -116,11 +116,10 @@ Content-Type: application/json
 
 ### delete account
 POST {{GPMuseumify_HostAddress}}/api/users/me/delete-account
-Authorization: Bearer {{Token}}
-Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2YWZlMWJjNi04NWRhLTQxN2YtODViMy03ZjczOGRlZTk3NTEiLCJlbWFpbCI6ImFsYWFzYW1lcjIyMjAwNEBnbWFpbC5jb20iLCJzdWIiOiI2YWZlMWJjNi04NWRhLTQxN2YtODViMy03ZjczOGRlZTk3NTEiLCJ1bmlxdWVfbmFtZSI6ImFsYWEiLCJyb2xlIjoiVXNlciIsIklzRW1haWxWZXJpZmllZCI6IlRydWUiLCJuYmYiOjE3Nzg2MTk0NjgsImV4cCI6MTc3ODcwNTg2OCwiaWF0IjoxNzc4NjE5NDY4LCJpc3MiOiJNdXNldW1pZnlBUEkiLCJhdWQiOiJNdXNldW1pZnlBcHAifQ.kojxjiLpEg6Ua0CsaLXZdHuEBKWVMMljU8M5x_IIPOI
 
 {
-  "password": "123456"
+  "password": "12345678910"
 }
 
 
