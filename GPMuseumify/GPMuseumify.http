@@ -8,7 +8,7 @@ Content-Type: application/json
 {
   "name": "alaa",
   "email": "alaasamer222004@gmail.com",
-  "password": "alaa12345",
+  "password": "123456789",
   "phoneNumber": "01033264791"
 
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "password": "alaa12345"
+  "password": "alaasamer"
 }
 
 ### 3️⃣ Verify Email 
@@ -31,7 +31,7 @@ Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "code": "3491"
+  "code": "4132"
 }
 
 ### 4️⃣ Resend Verification Code 
@@ -59,7 +59,7 @@ Content-Type: application/json
 
 {
   "email": "alaasamer222004@gmail.com",
-  "code": "5141"
+  "code": "7606"
 }
 
 ### 3️⃣ Reset Password — تغيير الباسورد (بعد ما الـ OTP يتأكد)
@@ -67,9 +67,9 @@ POST {{GPMuseumify_HostAddress}}/api/auth/reset-password
 Content-Type: application/json
 
 {
-  "token": "1479e8312b0b42fd87b636c8c5311393",
-  "newPassword": "12345678910",
-  "confirmPassword": "12345678910"
+  "token": "56ac5d09d8a84d9b9177ef44c1c5d65c",
+  "newPassword": "alaasamer",
+  "confirmPassword": "alaasamer"
 }
 
 ### 7️⃣ Social Login 
@@ -143,7 +143,7 @@ POST {{GPMuseumify_HostAddress}}/api/search
 Content-Type: application/json
 
 {
-  "query": "ram",
+  "query": " Akhenaten   ",
   "type": "statue",
   "page": 1,
   "pageSize": 10
