@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GPMuseumify.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateScanStatueDriveVideos : Migration
+    public partial class FixStatueVideoArEnSwap : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // VideoUrl = Arabic, VideoUrlEn = English — /preview for in-app embed (same as Hatshepsut/Ramses)
+            // Corrects swapped AR/EN Drive links (VideoUrl = Arabic, VideoUrlEn = English)
             migrationBuilder.Sql(@"
 UPDATE Statues SET
     VideoUrl = N'https://drive.google.com/file/d/1B2PW2mRWFgV-fRKePDFQ8MQVcRGzWmfM/preview',
