@@ -48,9 +48,7 @@ public class SearchService : ISearchService
                 VideoUrl = isArabic || (s.VideoUrlEn == null || s.VideoUrlEn == string.Empty)
                     ? s.VideoUrl
                     : s.VideoUrlEn,
-                //StoryUrl = isArabic || (s.StoryUrlEn == null || s.StoryUrlEn == string.Empty)
-                //    ? s.StoryUrl
-                //    : s.StoryUrlEn
+             
             })
             .FirstOrDefaultAsync();
 
